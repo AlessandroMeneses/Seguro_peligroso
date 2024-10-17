@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, XCircle, Star } from "lucide-react";
 import "./Seguro.css";
 
@@ -21,9 +21,9 @@ import titleImage from "./assets/img/title.png";
 
 // Componente actualizado para las luces coloridas
 const ColorfulLights = ({ visible }) => {
-  const totalDuration = 5000; // 5 seconds for the entire animation
-  const visibleDuration = 1500; // 2 seconds for each circle to be visible
-  const numberOfLights = 10; // Reduced number of lights for a 5-second total duration
+  const totalDuration = 5000;
+  const visibleDuration = 1500;
+  const numberOfLights = 10;
 
   const lights = Array.from({ length: numberOfLights }, (_, i) => ({
     id: i,
@@ -44,7 +44,6 @@ const ColorfulLights = ({ visible }) => {
             )
           );
 
-          // Hide the circle after visibleDuration
           setTimeout(() => {
             setAnimatedLights((prev) =>
               prev.map((light, i) =>
@@ -55,7 +54,6 @@ const ColorfulLights = ({ visible }) => {
         }, index * intervalBetweenLights);
       });
 
-      // Reset all lights after the total duration
       const resetTimeout = setTimeout(() => {
         setAnimatedLights(lights);
       }, totalDuration);
@@ -120,6 +118,16 @@ export default function GameComponent() {
   const [showLights, setShowLights] = useState(false);
   const timeAudioRef = useRef(new Audio(time));
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showAlejoMessage, setShowAlejoMessage] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState("");
+
+  const alejoMessages = [
+    "¡Cuidado! Esa opción es peligrosa",
+    "¡Recuerda las señales de tránsito!",
+    "¡Esa no es la opción segura!",
+    "¡Piensa en tu seguridad!",
+    "¡Mantén siempre la precaución!",
+  ];
 
   const imagePairs = [
     { correct: imagen2, incorrect: imagen1 },
@@ -186,6 +194,17 @@ export default function GameComponent() {
         .play()
         .catch((error) => console.error("Error playing derrota audio:", error));
 
+      // Mostrar mensaje de Alejo
+      setCurrentMessage(
+        alejoMessages[Math.floor(Math.random() * alejoMessages.length)]
+      );
+      setShowAlejoMessage(true);
+
+      // Ocultar mensaje después de 10 segundos
+      setTimeout(() => {
+        setShowAlejoMessage(false);
+      }, 10000);
+
       setIsSpinning(true);
       setIsAnimating(true);
       setTimeout(() => {
@@ -218,7 +237,7 @@ export default function GameComponent() {
         setShowLights(true);
         setTimeout(() => {
           setShowLights(false);
-        }, 5000); // Asegura que las luces se muestren durante 5 segundos
+        }, 5000);
       }
 
       timeAudioRef.current.pause();
@@ -246,6 +265,7 @@ export default function GameComponent() {
     setGameStarted(false);
     setScore(0);
     setShowLights(false);
+    setShowAlejoMessage(false);
     timeAudioRef.current.pause();
     timeAudioRef.current.currentTime = 0;
   };
@@ -267,7 +287,7 @@ export default function GameComponent() {
     transition: { duration: 0.2 },
   };
 
-    return (
+  return (
     <>
       <div className="title-image-container">
         <img src={titleImage} alt="Game Title" className="title-image" />
@@ -401,6 +421,37 @@ export default function GameComponent() {
           )}
         </div>
       </div>
+
+      <AnimatePresence>
+        {showAlejoMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            style={{
+              position: "fixed", // Cambié 'flex' a 'fixed' para posicionarlo de manera precisa
+              bottom: "600px", // Ajusté el valor para moverlo más arriba
+              left: "60px", // Agregué 'right' para moverlo hacia la derecha
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              padding: "15px 20px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+              maxWidth: "250px",
+              zIndex: 1100, // Aumenté el 'zIndex' para mayor prioridad
+              border: "2px solid #ff6b6b",
+              fontWeight: "bold",
+              color: "#ff4757",
+              fontSize: "16px",
+              fontFamily: "Arial, sans-serif",
+              transform: "translateY(-50%)",
+              backdropFilter: "blur(5px)",
+            }}
+          >
+            {currentMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="car car1">
         <div className="wheel left"></div>
         <div className="wheel right"></div>
