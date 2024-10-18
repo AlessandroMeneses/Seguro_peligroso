@@ -429,18 +429,18 @@ export default function GameComponent() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             style={{
-              position: "fixed", // Cambié 'flex' a 'fixed' para posicionarlo de manera precisa
-              bottom: "600px", // Ajusté el valor para moverlo más arriba
-              left: "60px", // Agregué 'right' para moverlo hacia la derecha
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              position: "fixed",
+              bottom: "500px",
+              left: "150px",
+              backgroundColor: "rgba(255, 255, 200, 0.95)",
               padding: "15px 20px",
               borderRadius: "12px",
               boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
               maxWidth: "250px",
-              zIndex: 1100, // Aumenté el 'zIndex' para mayor prioridad
-              border: "2px solid #ff6b6b",
+              zIndex: 1100,
+              border: "2px solid #ffc107",
               fontWeight: "bold",
-              color: "#ff4757",
+              color: "#856404",
               fontSize: "16px",
               fontFamily: "Arial, sans-serif",
               transform: "translateY(-50%)",
