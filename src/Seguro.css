@@ -101,6 +101,7 @@ body {
   font-family: 'Luckiest Guy', cursive;
   font-weight: 400;
   text-shadow: 2px 2px 2px var(--color-black);
+  
 
   /* Animación de cambio de color */
   animation: colorChange 5s infinite linear;
@@ -137,15 +138,41 @@ body {
   max-width: 800px;
   width: 90%;
   max-height: 90vh;
+  height: 60vh;
   overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
 }
 
-/* .game-title {
-  font-family: 'Luckiest Guy', cursive;
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 2rem;
-} */
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.containers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
 
 .alejo-image {
   position: fixed;
@@ -155,34 +182,19 @@ body {
   height: auto;
   z-index: 1000;
 }
-
-.top-bar {
-  position: fixed;
-  max-width: 800px;
-  width: 90%;
-  max-height: 90vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  z-index: 10;
-  margin-bottom: 600px;
-}
-
 .timer, .score {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: bold;
   font-family: 'Luckiest Guy', cursive;
-  color: #ffffffd7;
-  letter-spacing: 0.1rem; /* Aumenta el espaciado entre letras */
+  color: #000000;
+  letter-spacing: 0.1em;
 }
 
 .timer-digits, .score-digits {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   color: var(--color-light-red);
-  letter-spacing: 0.1rem; /* Aumenta el espaciado entre los dígitos */
+  letter-spacing: 0.1em;
 }
-
 
 .level-selector {
   display: flex;
@@ -190,20 +202,16 @@ body {
 }
 
 .level-selector label {
-  margin-right: 0.5rem;
+  margin-right: 0.5em;
   font-family: 'Luckiest Guy', cursive;
-  font-size: x-large;
+  font-size: clamp(1.25rem, 3vw, 2rem);
   color: var(--color-black);
 }
 
 .level-selector select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: 2px solid var(--color-light-green);
-  background-color: var(--color-white);
-  color: var(--color-green);
-  cursor: pointer;
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
+  padding: 0.5em;
+  border-radius: 0.5em;
 }
 
 .level-selector option {
@@ -214,12 +222,6 @@ body {
   margin-bottom: 2rem;
 }
 
-.containers {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
 
 .container {
   width: 45%;
@@ -287,7 +289,9 @@ body {
 .start {
   display: flex;
   justify-content: flex-end;
+  gap: 10px; /* Añade un espacio entre los botones */
 }
+
 
 button {
   padding: 0.6em 1.2em !important;
@@ -439,26 +443,50 @@ button:active {
   to { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.mess {
+  width: 90%;
+  max-width: 400px;
+  background-color: #f8d7da; 
+  color: #721c24; 
+  border: 1px solid #f5c6cb; 
+  padding: 1rem;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
 
 
 
-
-
-
-
-/* * Pantallas muy grandes (PC 2000px o más) */
+/* Pantallas muy grandes (PC 2000px o más) */
 @media (min-width: 2000px) {
   .content {
     max-width: 1000px;
     width: 100%;
     max-height: 90vh;
+    margin-top: 60px;
   }
 
-  .top-bar {
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
-    margin-bottom: 700px;
+  .top-bar { 
+    font-size: 4rem;
+    max-width: 1000px;
   }
 
   .title-image {
@@ -483,78 +511,17 @@ button:active {
   }
 }
 
-
-/* Pantallas grandes (PC 1700px - 1999px)
-@media (min-width: 1700px) and (max-width: 1999px) {
-  body {
-    background-position: right center;
-  }
-
+@media (min-width: 1600px) and (max-width: 1999px) {
   .content {
-    max-width: 700px;
-    width: 90%;
+    max-width: 1000px;
+    width: 100%;
     max-height: 90vh;
+    margin-top: 60px;
   }
 
-  .top-bar {
-    max-width: 700px;
-    width: 90%;
-    max-height: 90vh;
-  }
-
-  .title-image {
-    max-width: 500px;
-  }
-
-  .alejo-image {
-    max-width: 500px;
-  }
-} */
-
-/* Pantallas grandes (PC 1600px - 1699px) */
-/* @media (min-width: 1600px) and (max-width: 1699px) {
-  body {
-    background-position: right center;
-  }
-
-  .content {
-    max-width: 700px;
-    width: 90%;
-    max-height: 90vh;
-  }
-
-  .top-bar {
-    max-width: 700px;
-    width: 90%;
-    max-height: 90vh;
-  }
-
-  .title-image {
-    max-width: 450px;
-  }
-
-  .alejo-image {
-    max-width: 450px;
-  }
-} */
-
-/* Pantallas medianamente grandes (PC 1366px - 1599px) */
-@media (min-width: 1366px) and (max-width: 1599px) {
-  body {
-    background-position: right center;
-  }
-
-  .content {
-    max-width: 500px;
-    width: 85%;
-    max-height: 85vh;
-  }
-
-  .top-bar {
-    max-width: 600px;
-    width: 85%;
-    max-height: 85vh;
-    margin-bottom: 450px;
+  .top-bar { 
+    font-size: 4rem;
+    max-width: 1000px;
   }
 
   .title-image {
@@ -565,6 +532,42 @@ button:active {
     max-width: 600px;
     width: 200px;
   }
+  
+  body {
+    background-image: url(/src/assets/img/fondo11.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+}
+
+/* Pantallas medianamente grandes (PC 1366px - 1599px) */
+@media (min-width: 1366px) and (max-width: 1599px) {
+  .content {
+    max-width: 1000px;
+    width: 40%;
+    max-height: 90vh;
+    margin-top: 60px;
+  }
+
+  .top-bar { 
+    max-width: 1000px;
+  }
+
+  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
+    font-size: 25px;
+  }
+
+  .title-image {
+    max-width: 400px;
+  }
+
+  .alejo-image {
+    max-width: 600px;
+    width: 200px;
+  }
+  
   body {
     background-image: url(/src/assets/img/fondo11.png);
     background-position: bottom center;
@@ -577,19 +580,17 @@ button:active {
 /* Pantallas de escritorio normales (PC 1024px - 1365px) */
 @media (min-width: 1025px) and (max-width: 1365px) {
   .content {
-    max-width: 500px;
-    width: 350px;
-    max-height: 85vh;
-    margin-left: 200px;
+    max-width: 1000px;
+    width: 40%;
+    max-height: 90vh;
   }
 
-  .top-bar {
-    flex-direction: column;
-    max-width: 450px;
-    width: 80%;
-    margin-bottom: 450px;
-    max-height: 85vh;
-    margin-left: 200px;
+  .top-bar { 
+    max-width: 1000px;
+  }
+
+    .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
+    font-size: 16px;
   }
 
   .title-image {
@@ -597,7 +598,7 @@ button:active {
   }
 
   .alejo-image {
-    max-width: 200px; /* Ajusta según tus necesidades */
+    max-width: 200px;
     margin-bottom: 20px;
   }
 }
@@ -605,117 +606,121 @@ button:active {
 /* Tablets (768px - 1023px) */
 @media (min-width: 767px) and (max-width: 1024px) {
   .content {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 20px;
+    max-width: 1000px;
+    width: 50%;
+    max-height: 90vh;
   }
 
-  .top-bar {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 370px;
+  .top-bar { 
+    max-width: 1000px;
   }
-  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label{
+
+  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
     font-size: 14px;
+  }
+
+  .title-image {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente la imagen */
+    align-items: center; /* Alinea verticalmente si es necesario */
+    max-width: 500px;
+    width: 30%;
+    margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
   }
   
 
-  .title-image {
-    max-width: 230px;
-  }
-
   .alejo-image {
     max-width: 600px;
-    width: 150px;
+    width: 20%;
   }
 
   body {
-  background-image: url(/src/assets/img/fondo1.png);
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+    background-image: url(/src/assets/img/fondo1.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
   }
 }
 
-
-/* Pantallas pequeñas (teléfonos grandes, 600px - 767px) */
 @media (min-width: 599px) and (max-width: 767px) {
   .content {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 20px;
+    max-width: 1000px;
+    max-height: 90vh;
+    margin-top: 60px;
   }
 
-  .top-bar {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 370px;
+  .top-bar { 
+    font-size: 4rem;
+    max-width: 1000px;
+    width: 60%;
   }
-  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label{
+
+  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
     font-size: 14px;
+  }
+
+  .title-image {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente la imagen */
+    align-items: center; /* Alinea verticalmente si es necesario */
+    max-width: 500px;
+    width: 35%;
+    margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
   }
   
 
-  .title-image {
-    max-width: 200px;
-  }
-
   .alejo-image {
     max-width: 600px;
-    width: 100px;
+    width: 25%;
   }
 
-  /* Cambiar el background-image para pantallas móviles pequeñas */
   body {
-  background-image: url(/src/assets/img/fondo1.png);
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+    background-image: url(/src/assets/img/fondo1.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
   }
 }
 
 /* Pantallas móviles medianas (480px - 599px) */
 @media (min-width: 480px) and (max-width: 599px) {
   .content {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 20px;
+    max-width: 550px;
+    width: 70%;
   }
 
-  .top-bar {
-    max-width: 350px;
-    width: 100%;
-    max-height: 65vh;
-    margin-bottom: 370px;
+  .top-bar { 
+    font-size: 8rem;
+    max-width: 550px;
   }
-  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label{
+
+  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
     font-size: 14px;
+  }
+
+  .title-image {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente la imagen */
+    align-items: center; /* Alinea verticalmente si es necesario */
+    max-width: 500px;
+    width: 30%;
+    margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
   }
   
 
-  .title-image {
-    max-width: 200px;
-  }
-
   .alejo-image {
     max-width: 600px;
-    width: 100px;
+    width: 17%;
   }
 
-  /* Cambiar el background-image para pantallas móviles pequeñas */
   body {
-  background-image: url(/src/assets/img/fondo11.png);
-  background-position: right center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+    background-image: url(/src/assets/img/fondo1.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
   }
 }
 
@@ -726,21 +731,25 @@ button:active {
     width: 100%;
     max-height: 65vh;
     margin-bottom: 20px;
+    margin-top: 60px;
   }
 
-  .top-bar {
-    max-width: 350px;
+  .top-bar { 
+    max-width: 600px;max-width: 350px;
     width: 100%;
-    max-height: 65vh;
-    margin-bottom: 370px;
   }
-  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label{
+
+  .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
     font-size: 14px;
   }
-  
 
   .title-image {
-    max-width: 200px;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente la imagen */
+    align-items: center; /* Alinea verticalmente si es necesario */
+    max-width: 500px;
+    width: 40%;
+    margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
   }
 
   .alejo-image {
@@ -748,15 +757,11 @@ button:active {
     width: 100px;
   }
 
-  /* Cambiar el background-image para pantallas móviles pequeñas */
   body {
-  background-image: url(/src/assets/img/fondo11.png);
-  background-position: right center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+    background-image: url(/src/assets/img/fondo11.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
   }
 }
-
-
-

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, XCircle, Star } from "lucide-react";
+import { CheckCircle, XCircle, Star, AlertTriangle } from "lucide-react";
 import "./Seguro.css";
 
 // Import the sounds
@@ -10,20 +10,58 @@ import time from "./assets/sounds/time.mp3";
 import winSound from "./assets/sounds/win.mp3";
 
 // Import the images
-import imagen1 from "./assets/img/imagen1.jpg";
-import imagen2 from "./assets/img/imagen2.jpg";
-import imagen3 from "./assets/img/imagen3.jpg";
-import imagen4 from "./assets/img/imagen4.jpg";
-import imagen5 from "./assets/img/imagen5.jpg";
-import imagen6 from "./assets/img/imagen6.jpg";
+// Imágenes seguras (1-10)
+import par1 from "./assets/img/par1.png";
+import par2 from "./assets/img/par2.png";
+import par3 from "./assets/img/par3.png";
+import par4 from "./assets/img/par4.png";
+import par5 from "./assets/img/par5.png";
+import par6 from "./assets/img/par6.png";
+import par7 from "./assets/img/par7.png";
+import par8 from "./assets/img/par8.png";
+import par9 from "./assets/img/par9.png";
+import par10 from "./assets/img/par10.png";
+
+// Imágenes peligrosas (11-1010)
+import par11 from "./assets/img/par11.png";
+import par22 from "./assets/img/par22.png";
+import par33 from "./assets/img/par33.png";
+import par44 from "./assets/img/par44.png";
+import par55 from "./assets/img/par55.png";
+import par66 from "./assets/img/par66.png";
+import par77 from "./assets/img/par77.png";
+import par88 from "./assets/img/par88.png";
+import par99 from "./assets/img/par99.png";
+import par1010 from "./assets/img/par1010.png";
+
 import alejoImage from "./assets/img/alejo.png";
 import titleImage from "./assets/img/title.png";
 
-// Componente actualizado para las luces coloridas
+const messagesByImage = {
+  0: "El adulto no va atento al joven",
+  1: "No espera en semáforo rojo",
+  2: "No respeta la señal",
+  3: "No va atento a la vía",
+  4: "Parquea donde no debe",
+  5: "No respeta la señal",
+  6: "No utiliza cruce peatonal",
+  7: "Parquea donde no debe",
+  8: "No espera en semáforo rojo",
+  9: "No esta atento al semáforo"
+};
+
+const TitleComponent = () => {
+  return (
+    <div className="title-container">
+      <img src={titleImage} alt="¿Seguro o Peligroso?" className="title-image" />
+    </div>
+  );
+};
+
 const ColorfulLights = ({ visible }) => {
   const totalDuration = 5000;
-  const visibleDuration = 1500;
-  const numberOfLights = 10;
+  const visibleDuration = 5000;
+  const numberOfLights = 15;
 
   const lights = Array.from({ length: numberOfLights }, (_, i) => ({
     id: i,
@@ -76,30 +114,33 @@ const ColorfulLights = ({ visible }) => {
 
   return (
     <div className="colorful-lights">
-      {animatedLights.map((light) => (
-        <motion.div
-          key={light.id}
-          className="light"
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: light.show ? 1 : 0,
-            scale: light.show ? 1 : 0.5,
-          }}
-          transition={{
-            opacity: { duration: 0.5 },
-            scale: { duration: 0.5 },
-          }}
-          style={{
-            backgroundColor: getRandomColor(),
-            position: "absolute",
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: "50px",
-            height: "50px",
-            borderRadius: "50%",
-          }}
-        />
-      ))}
+      <AnimatePresence>
+        {animatedLights.map(
+          (light) =>
+            light.show && (
+              <motion.div
+                key={light.id}
+                className="light"
+                initial={{ opacity: 0, y: 0 }}
+                animate={{ opacity: 1, y: -100 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.5 },
+                  y: { duration: 3, ease: "easeOut" },
+                }}
+                style={{
+                  backgroundColor: getRandomColor(),
+                  position: "absolute",
+                  bottom: `${Math.random() * 50}%`,
+                  left: `${Math.random() * 100}%`,
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50%",
+                }}
+              />
+            )
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -108,7 +149,7 @@ export default function GameComponent() {
   const [selectedContainer, setSelectedContainer] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentPair, setCurrentPair] = useState(0);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(50);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [level, setLevel] = useState(1);
@@ -118,21 +159,22 @@ export default function GameComponent() {
   const [showLights, setShowLights] = useState(false);
   const timeAudioRef = useRef(new Audio(time));
   const [isAnimating, setIsAnimating] = useState(false);
-  const [showAlejoMessage, setShowAlejoMessage] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState("");
-
-  const alejoMessages = [
-    "¡Cuidado! Esa opción es peligrosa",
-    "¡Recuerda las señales de tránsito!",
-    "¡Esa no es la opción segura!",
-    "¡Piensa en tu seguridad!",
-    "¡Mantén siempre la precaución!",
-  ];
+  const [warningMessage, setWarningMessage] = useState("");
+  const [dangerousSelected, setDangerousSelected] = useState(false);
+  const [safeSelected, setSafeSelected] = useState(false);
+  const [rotatingIndex, setRotatingIndex] = useState(null);
 
   const imagePairs = [
-    { correct: imagen2, incorrect: imagen1 },
-    { correct: imagen4, incorrect: imagen3 },
-    { correct: imagen6, incorrect: imagen5 },
+    { correct: par1, incorrect: par11 },
+    { correct: par2, incorrect: par22 },
+    { correct: par3, incorrect: par33 },
+    { correct: par4, incorrect: par44 },
+    { correct: par5, incorrect: par55 },
+    { correct: par6, incorrect: par66 },
+    { correct: par7, incorrect: par77 },
+    { correct: par8, incorrect: par88 },
+    { correct: par9, incorrect: par99 },
+    { correct: par10, incorrect: par1010 }
   ];
 
   const shuffleImages = () => {
@@ -153,9 +195,7 @@ export default function GameComponent() {
           if (prevTimer === 11) {
             timeAudioRef.current
               .play()
-              .catch((error) =>
-                console.error("Error playing time audio:", error)
-              );
+              .catch((error) => console.error("Error playing time audio:", error));
           }
           if (prevTimer === 1) {
             setIsTimerRunning(false);
@@ -176,48 +216,47 @@ export default function GameComponent() {
   }, [isTimerRunning, timer]);
 
   const handleContainerClick = (index) => {
-    if (!gameStarted || isAnimating) return;
-    const isCorrect =
-      shuffledImages[currentPair][index] === imagePairs[currentPair].correct;
-    setSelectedContainer(index);
+    if (!gameStarted || isAnimating || (safeSelected && shuffledImages[currentPair][index] !== imagePairs[currentPair].correct)) {
+      return;
+    }
 
+    const isCorrect = shuffledImages[currentPair][index] === imagePairs[currentPair].correct;
+
+    setSelectedContainer(index);
+    
     if (isCorrect) {
       const audio = new Audio(victoria);
-      audio
-        .play()
-        .catch((error) =>
-          console.error("Error playing victoria audio:", error)
-        );
+      audio.play().catch((error) => console.error("Error playing victoria audio:", error));
+      setSafeSelected(true);
+      setDangerousSelected(false);
+      setWarningMessage("");
+      setRotatingIndex(null);
     } else {
       const audio = new Audio(derrota);
-      audio
-        .play()
-        .catch((error) => console.error("Error playing derrota audio:", error));
-
-      // Mostrar mensaje de Alejo
-      setCurrentMessage(
-        alejoMessages[Math.floor(Math.random() * alejoMessages.length)]
-      );
-      setShowAlejoMessage(true);
-
-      // Ocultar mensaje después de 10 segundos
-      setTimeout(() => {
-        setShowAlejoMessage(false);
-      }, 10000);
-
+      audio.play().catch((error) => console.error("Error playing derrota audio:", error));
+      
       setIsSpinning(true);
       setIsAnimating(true);
+      setRotatingIndex(index);
+      setWarningMessage(messagesByImage[currentPair]);
+      setDangerousSelected(true);
+      
       setTimeout(() => {
         setIsSpinning(false);
         setIsAnimating(false);
-      }, 1800);
+        setRotatingIndex(null);
+      }, 2000);
     }
   };
 
   const handleNextClick = () => {
-    if (currentPair < 2) {
+    if (currentPair < 9) {
       setCurrentPair((prev) => prev + 1);
       setSelectedContainer(null);
+      setWarningMessage("");
+      setDangerousSelected(false);
+      setSafeSelected(false);
+      setRotatingIndex(null);
     } else {
       setIsGameCompleted(true);
       setIsTimerRunning(false);
@@ -230,9 +269,7 @@ export default function GameComponent() {
 
       if (allCorrect) {
         const audio = new Audio(winSound);
-        audio
-          .play()
-          .catch((error) => console.error("Error playing win audio:", error));
+        audio.play().catch((error) => console.error("Error playing win audio:", error));
 
         setShowLights(true);
         setTimeout(() => {
@@ -246,7 +283,7 @@ export default function GameComponent() {
   };
 
   const calculateScore = () => {
-    const maxTime = level === 1 ? 30 : level === 2 ? 20 : 10;
+    const maxTime = level === 1 ? 50 : level === 2 ? 35 : 20;
     const timeLeft = timer;
     const maxScore = level === 1 ? 100 : level === 2 ? 500 : 1000;
     const calculatedScore = Math.round((timeLeft / maxTime) * maxScore);
@@ -257,7 +294,7 @@ export default function GameComponent() {
     setSelectedContainer(null);
     setIsSpinning(false);
     setCurrentPair(0);
-    setTimer(level === 1 ? 30 : level === 2 ? 20 : 10);
+    setTimer(level === 1 ? 50 : level === 2 ? 35 : 20);
     setIsTimerRunning(false);
     setIsGameCompleted(false);
     setIsGameLost(false);
@@ -265,7 +302,10 @@ export default function GameComponent() {
     setGameStarted(false);
     setScore(0);
     setShowLights(false);
-    setShowAlejoMessage(false);
+    setWarningMessage("");
+    setDangerousSelected(false);
+    setSafeSelected(false);
+    setRotatingIndex(null);
     timeAudioRef.current.pause();
     timeAudioRef.current.currentTime = 0;
   };
@@ -273,7 +313,7 @@ export default function GameComponent() {
   const handleLevelChange = (newLevel) => {
     if (!gameStarted && !isGameCompleted) {
       setLevel(newLevel);
-      setTimer(newLevel === 1 ? 30 : newLevel === 2 ? 20 : 10);
+      setTimer(newLevel === 1 ? 50 : newLevel === 2 ? 35 : 20);
     }
   };
 
@@ -282,44 +322,48 @@ export default function GameComponent() {
     setGameStarted(true);
   };
 
-  const containerHoverAnimation = {
-    scale: 1.05,
-    transition: { duration: 0.2 },
-  };
-
   return (
     <>
-      <div className="title-image-container">
-        <img src={titleImage} alt="Game Title" className="title-image" />
-      </div>
+      <TitleComponent />
       <div className="app-container">
-        <div className="top-bar">
-          {!isGameCompleted && !isGameLost && (
-            <>
-              <div className="timer">
-                Tiempo: <span className="timer-digits">{timer} S</span>
-              </div>
-              <div className="score">
-                Puntuación: <span className="score-digits">{score}</span>
-              </div>
-            </>
-          )}
-          <div className="level-selector">
-            <label htmlFor="level-select">Nivel: </label>
-            <select
-              id="level-select"
-              value={level}
-              onChange={(e) => handleLevelChange(Number(e.target.value))}
-              disabled={gameStarted || isGameCompleted}
-              className={gameStarted || isGameCompleted ? "disabled" : ""}
-            >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-            </select>
+        <ColorfulLights visible={showLights} />
+        {warningMessage && (
+          <div className="mess">
+            <AlertTriangle className="warning-icon inline-block mr-2" />
+            &nbsp;
+            {warningMessage}
           </div>
-        </div>
+        )}
         <div className="content">
+          <div className="top-bar">
+            {!isGameCompleted && !isGameLost && (
+              <>
+                <div className="timer">
+                  Tiempo: <span className="timer-digits">{timer} S</span>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div className="score">
+                  Puntuación: <span className="score-digits">{score}</span>
+                  &nbsp;
+                </div>
+              </>
+            )}
+            <div className="level-selector">
+              <label htmlFor="level-select">Nivel: </label>
+              <select
+                id="level-select"
+                value={level}
+                onChange={(e) => handleLevelChange(Number(e.target.value))}
+                disabled={gameStarted || isGameCompleted}
+                className={gameStarted || isGameCompleted ? "disabled" : ""}
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+              </select>
+            </div>
+          </div>
           {!isGameCompleted && !isGameLost ? (
             <div className="game-area">
               <div className="containers">
@@ -333,16 +377,20 @@ export default function GameComponent() {
                             ? "selected-correct"
                             : "selected-incorrect"
                           : ""
-                      }`}
-                      whileHover={!isAnimating ? containerHoverAnimation : {}}
+                      } ${safeSelected && image !== imagePairs[currentPair].correct ? "disabled" : ""}`}
+                      whileHover={!isAnimating && !safeSelected ? { scale: 1.05 } : {}}
                       animate={
-                        isSpinning &&
-                        selectedContainer === index &&
-                        image !== imagePairs[currentPair].correct
-                          ? { rotateY: [0, 720] }
+                        rotatingIndex === index
+                          ? {
+                              rotateY: [0, 360],
+                              transition: {
+                                duration: 1,
+                                ease: "easeInOut",
+                                repeat: 2
+                              }
+                            }
                           : {}
                       }
-                      transition={{ duration: 1.2, ease: "linear" }}
                       onClick={() => handleContainerClick(index)}
                     >
                       <img src={image} alt="Imagen" />
@@ -357,117 +405,88 @@ export default function GameComponent() {
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.1 }}
                         >
-                          {image === imagePairs[currentPair].correct ? (
-                            <CheckCircle className="icon" />
-                          ) : (
-                            <XCircle className="icon" />
-                          )}
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  ))}
+                         {image === imagePairs[currentPair].correct ? (
+                              <CheckCircle className="icon" />
+                            ) : (
+                              <XCircle className="icon" />
+                            )}
+                          </motion.div>
+                        )}
+                      </motion.div>
+                    ))}
+                </div>
               </div>
-            </div>
-          ) : isGameLost ? (
-            <div className="completion-message">
-              <h2 className="perdiste">¡Perdiste!</h2>
-              <p>Se acabó el tiempo. Vuelve a intentarlo.</p>
-              <p>Puntuación final: {score}</p>
-              <button className="restart-button" onClick={handleRestart}>
-                Volver a empezar
-              </button>
-            </div>
-          ) : (
-            <div className="completion-message">
-              <h2>¡Felicitaciones!</h2>
-              <Star className="star-icon" />
-              <p>
-                Has completado el juego en{" "}
-                {(level === 1 ? 30 : level === 2 ? 20 : 10) - timer} segundos.
-              </p>
-              <p>Puntuación final: {score}</p>
-              <div className="button-container">
+            ) : isGameLost ? (
+              <div className="completion-message">
+                <h2 className="perdiste">¡Perdiste!</h2>
+                <p>Se acabó el tiempo. Vuelve a intentarlo.</p>
+                <p>Puntuación final: {score}</p>
                 <button className="restart-button" onClick={handleRestart}>
                   Volver a empezar
                 </button>
-                <button className="home-button">Ir a inicio</button>
               </div>
-              <ColorfulLights visible={showLights} />
-            </div>
-          )}
+            ) : (
+              <div className="completion-message">
+                <h2>¡Felicitaciones!</h2>
+                <Star className="star-icon" />
+                <p>
+                  Has completado el juego en{" "}
+                  {(level === 1 ? 30 : level === 2 ? 20 : 10) - timer} segundos.
+                </p>
+                <p>Puntuación final: {score}</p>
+                <div className="button-container">
+                  <button className="restart-button" onClick={handleRestart}>
+                    Volver a empezar
+                  </button>
+                  <button className="home-button">Ir a inicio</button>
+                </div>
+              </div>
+            )}
 
-          {!isGameCompleted && !isGameLost && gameStarted && (
-            <div className="start">
-              <button
-                className="start-button"
-                onClick={handleNextClick}
-                disabled={
-                  selectedContainer === null ||
-                  shuffledImages[currentPair][selectedContainer] !==
-                    imagePairs[currentPair].correct
-                }
-              >
-                {currentPair === 2 ? "Finalizar" : "Siguiente"}
-              </button>
-            </div>
-          )}
+            {!isGameCompleted && !isGameLost && gameStarted && (
+              <div className="start">
+                <button
+                  className="start-button"
+                  onClick={handleNextClick}
+                  disabled={
+                    selectedContainer === null ||
+                    shuffledImages[currentPair][selectedContainer] !==
+                      imagePairs[currentPair].correct
+                  }
+                >
+                  {currentPair === 9 ? "Finalizar" : "Siguiente"}
+                </button>
+                <button className="restart-button" onClick={handleRestart}>
+                  Volver a empezar
+                </button>
+              </div>
+            )}
 
-          {!gameStarted && !isGameCompleted && !isGameLost && (
-            <div className="start">
-              <button className="start-button" onClick={handleStartGame}>
-                Comenzar
-              </button>
-            </div>
-          )}
+            {!gameStarted && !isGameCompleted && !isGameLost && (
+              <div className="start">
+                <button className="start-button" onClick={handleStartGame}>
+                  Comenzar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+        <div className="car car1">
+          <div className="wheel left"></div>
+          <div className="wheel right"></div>
+        </div>
 
-      <AnimatePresence>
-        {showAlejoMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            style={{
-              position: "fixed",
-              bottom: "500px",
-              left: "150px",
-              backgroundColor: "rgba(255, 255, 200, 0.95)",
-              padding: "15px 20px",
-              borderRadius: "12px",
-              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-              maxWidth: "250px",
-              zIndex: 1100,
-              border: "2px solid #ffc107",
-              fontWeight: "bold",
-              color: "#856404",
-              fontSize: "16px",
-              fontFamily: "Arial, sans-serif",
-              transform: "translateY(-50%)",
-              backdropFilter: "blur(5px)",
-            }}
-          >
-            {currentMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <div className="car car2">
+          <div className="wheel left"></div>
+          <div className="wheel right"></div>
+        </div>
 
-      <div className="car car1">
-        <div className="wheel left"></div>
-        <div className="wheel right"></div>
-      </div>
+        <div className="car car3">
+          <div className="wheel left"></div>
+          <div className="wheel right"></div>
+        </div>
 
-      <div className="car car2">
-        <div className="wheel left"></div>
-        <div className="wheel right"></div>
-      </div>
-
-      <div className="car car3">
-        <div className="wheel left"></div>
-        <div className="wheel right"></div>
-      </div>
-
-      <img src={alejoImage} alt="Alejo" className="alejo-image" />
+        <img src={alejoImage} alt="Alejo" className="alejo-image" />
     </>
   );
 }
