@@ -34,6 +34,10 @@ import par88 from "./assets/img/par88.png";
 import par99 from "./assets/img/par99.png";
 import par1010 from "./assets/img/par1010.png";
 
+import car1 from "./assets/img/car1.png";
+import car2 from "./assets/img/car2.png";
+import car3 from "./assets/img/car3.png";
+
 import alejoImage from "./assets/img/alejo.png";
 import titleImage from "./assets/img/title.png";
 
@@ -341,8 +345,7 @@ export default function GameComponent() {
                 <div className="timer">
                   Tiempo: <span className="timer-digits">{timer} S</span>
                 </div>
-                &nbsp;
-                &nbsp;
+                &nbsp; &nbsp;
                 <div className="score">
                   Puntuación: <span className="score-digits">{score}</span>
                   &nbsp;
@@ -377,8 +380,15 @@ export default function GameComponent() {
                             ? "selected-correct"
                             : "selected-incorrect"
                           : ""
-                      } ${safeSelected && image !== imagePairs[currentPair].correct ? "disabled" : ""}`}
-                      whileHover={!isAnimating && !safeSelected ? { scale: 1.05 } : {}}
+                      } ${
+                        safeSelected &&
+                        image !== imagePairs[currentPair].correct
+                          ? "disabled"
+                          : ""
+                      }`}
+                      whileHover={
+                        !isAnimating && !safeSelected ? { scale: 1.05 } : {}
+                      }
                       animate={
                         rotatingIndex === index
                           ? {
@@ -386,8 +396,8 @@ export default function GameComponent() {
                               transition: {
                                 duration: 1,
                                 ease: "easeInOut",
-                                repeat: 2
-                              }
+                                repeat: 2,
+                              },
                             }
                           : {}
                       }
@@ -405,88 +415,84 @@ export default function GameComponent() {
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.1 }}
                         >
-                         {image === imagePairs[currentPair].correct ? (
-                              <CheckCircle className="icon" />
-                            ) : (
-                              <XCircle className="icon" />
-                            )}
-                          </motion.div>
-                        )}
-                      </motion.div>
-                    ))}
-                </div>
+                          {image === imagePairs[currentPair].correct ? (
+                            <CheckCircle className="icon" />
+                          ) : (
+                            <XCircle className="icon" />
+                          )}
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  ))}
               </div>
-            ) : isGameLost ? (
-              <div className="completion-message">
-                <h2 className="perdiste">¡Perdiste!</h2>
-                <p>Se acabó el tiempo. Vuelve a intentarlo.</p>
-                <p>Puntuación final: {score}</p>
+            </div>
+          ) : isGameLost ? (
+            <div className="completion-message">
+              <h2 className="perdiste">¡Perdiste!</h2>
+              <p>Se acabó el tiempo. Vuelve a intentarlo.</p>
+              <p>Puntuación final: {score}</p>
+              <button className="restart-button" onClick={handleRestart}>
+                Volver a empezar
+              </button>
+            </div>
+          ) : (
+            <div className="completion-message">
+              <h2>¡Felicitaciones!</h2>
+              <Star className="star-icon" />
+              <p>
+                Has completado el juego en{" "}
+                {(level === 1 ? 30 : level === 2 ? 20 : 10) - timer} segundos.
+              </p>
+              <p>Puntuación final: {score}</p>
+              <div className="button-container">
                 <button className="restart-button" onClick={handleRestart}>
                   Volver a empezar
                 </button>
+                <button className="home-button">Ir a inicio</button>
               </div>
-            ) : (
-              <div className="completion-message">
-                <h2>¡Felicitaciones!</h2>
-                <Star className="star-icon" />
-                <p>
-                  Has completado el juego en{" "}
-                  {(level === 1 ? 30 : level === 2 ? 20 : 10) - timer} segundos.
-                </p>
-                <p>Puntuación final: {score}</p>
-                <div className="button-container">
-                  <button className="restart-button" onClick={handleRestart}>
-                    Volver a empezar
-                  </button>
-                  <button className="home-button">Ir a inicio</button>
-                </div>
-              </div>
-            )}
+            </div>
+          )}
 
-            {!isGameCompleted && !isGameLost && gameStarted && (
-              <div className="start">
-                <button
-                  className="start-button"
-                  onClick={handleNextClick}
-                  disabled={
-                    selectedContainer === null ||
-                    shuffledImages[currentPair][selectedContainer] !==
-                      imagePairs[currentPair].correct
-                  }
-                >
-                  {currentPair === 9 ? "Finalizar" : "Siguiente"}
-                </button>
-                <button className="restart-button" onClick={handleRestart}>
-                  Volver a empezar
-                </button>
-              </div>
-            )}
+          {!isGameCompleted && !isGameLost && gameStarted && (
+            <div className="start">
+              <button
+                className="start-button"
+                onClick={handleNextClick}
+                disabled={
+                  selectedContainer === null ||
+                  shuffledImages[currentPair][selectedContainer] !==
+                    imagePairs[currentPair].correct
+                }
+              >
+                {currentPair === 9 ? "Finalizar" : "Siguiente"}
+              </button>
+              <button className="restart-button" onClick={handleRestart}>
+                Volver a empezar
+              </button>
+            </div>
+          )}
 
-            {!gameStarted && !isGameCompleted && !isGameLost && (
-              <div className="start">
-                <button className="start-button" onClick={handleStartGame}>
-                  Comenzar
-                </button>
-              </div>
-            )}
-          </div>
+          {!gameStarted && !isGameCompleted && !isGameLost && (
+            <div className="start">
+              <button className="start-button" onClick={handleStartGame}>
+                Comenzar
+              </button>
+            </div>
+          )}
         </div>
-        <div className="car car1">
-          <div className="wheel left"></div>
-          <div className="wheel right"></div>
-        </div>
+      </div>
+      <div className="car car1">
+        <img src={car1} alt="Car 1" />
+      </div>
 
-        <div className="car car2">
-          <div className="wheel left"></div>
-          <div className="wheel right"></div>
-        </div>
+      <div className="car car2">
+        <img src={car2} alt="Car 2" />
+      </div>
 
-        <div className="car car3">
-          <div className="wheel left"></div>
-          <div className="wheel right"></div>
-        </div>
-
-        <img src={alejoImage} alt="Alejo" className="alejo-image" />
+      <div className="car car3">
+        <img src={car3} alt="Car 3" />
+      </div>
+      <img src={alejoImage} alt="Alejo" className="alejo-image" />
     </>
   );
 }

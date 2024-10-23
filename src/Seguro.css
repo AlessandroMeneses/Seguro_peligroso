@@ -138,7 +138,7 @@ body {
   max-width: 800px;
   width: 90%;
   max-height: 90vh;
-  height: 60vh;
+  height: 70vh;
   overflow-y: auto;
   position: fixed;
   top: 50%;
@@ -296,7 +296,7 @@ body {
 .start {
   display: flex;
   justify-content: flex-end;
-  gap: 10px; /* Añade un espacio entre los botones */
+  gap: 10px;
 }
 
 
@@ -307,14 +307,31 @@ button {
   cursor: pointer !important;
   font-weight: 500 !important;
   border-radius: 8px !important;
-  font-family: inherit !important;
+  font-family: 'Luckiest Guy', cursive !important;
   border: 1px solid transparent !important;
-  background-color: var(--color-green) !important;
+  background-repeat: no-repeat;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-button:hover {
+.start-button{
+  background-image: url(/src/assets/img/titulos\ juegos-03.png);
+  background-repeat: no-repeat;
+  padding: 0%;
+  margin: 0%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
+}
+
+.restart-button{
+  background-image: url(/src/assets/img/titulos\ juegos-04.png);
+  background-repeat: no-repeat;
+  padding: 0%;
+  margin: 0%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
+
+}
+
+/* button:hover {
   background-color: darkgreen !important;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
 }
@@ -322,7 +339,7 @@ button:hover {
 button:active {
   transform: none !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-}
+} */
 
 .colorful-lights {
   position: fixed;
@@ -364,29 +381,9 @@ button:active {
 .light:nth-child(5n + 4) { background-color: rgba(255, 255, 0, 0.8); }
 .light:nth-child(5n + 5) { background-color: rgba(255, 0, 255, 0.8); }
 
-/* Estilos para los carros */
-.car {
-  position: fixed;
-  width: 60px;
-  height: 30px;
-  border-radius: 5px;
-  animation: carMove 20s linear infinite;
-  display: flex;
-  align-items: flex-end;
-}
 
-.car::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  width: 40px;
-  height: 20px;
-  background-color: #747474e0;
-  border-radius: 5px 5px 0 0;
-}
 
-.wheel {
+/* .wheel {
   position: absolute;
   bottom: -5px;
   width: 14px;
@@ -402,46 +399,68 @@ button:active {
 
 .wheel.right {
   right: 5px;
+} */
+
+/* Estilos para los carros */
+.car {
+  position: fixed;
+  border-radius: 5px;
+  animation: carMove 20s linear infinite;
+  display: flex;
+  align-items: flex-end;
+}
+
+.car::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  border-radius: 5px 5px 0 0;
+}
+
+.car1 img {
+  width: 10%;
+}
+.car2 img {
+  width: 10%;
+}
+.car3 img {
+  width: 10%;
 }
 
 .car1 {
   bottom: 10px;
-  background-color: #eeff00; /* Amarillo */
   animation-delay: 0s;
 }
 
 .car2 {
   bottom: 5px;
-  background-color: #ff6f61; /* Naranja */
   animation-delay: 1s;
 }
 
 .car3 {
   bottom: 15px;
-  background-color: #2bc4eb; /* Verde oscuro */
   animation-delay: 3s;
 }
 
+/* Animación sin cambios de tamaño */
 @keyframes carMove {
   0% {
     left: -60px;
-    transform: scaleX(1);
   }
   45% {
     left: calc(100vw);
-    transform: scaleX(1);
   }
   50% {
     left: calc(100vw);
-    transform: scaleX(-1);
   }
   95% {
-    left: -60px;
-    transform: scaleX(-1);
+    left: -100px;
   }
   100% {
     left: -60px;
-    transform: scaleX(1);
+    /* Reflejar horizontalmente pero sin afectar el tamaño */
+    transform: translateX(0) scaleX(-1);
   }
 }
 
@@ -460,6 +479,7 @@ button:active {
     transform: translate(-50%, 0);
   }
 }
+
 
 .mess {
   width: 90%;
