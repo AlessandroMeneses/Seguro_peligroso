@@ -205,16 +205,20 @@ body {
 }
 
 .level-selector label {
-  margin-right: 0.5em;
+  margin-right: 0.5rem;
   font-family: 'Luckiest Guy', cursive;
-  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-size: x-large;
   color: var(--color-black);
 }
 
 .level-selector select {
-  font-size: clamp(0.875rem, 2vw, 1.25rem);
-  padding: 0.5em;
-  border-radius: 0.5em;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--color-light-green);
+  background-color: var(--color-white);
+  color: var(--color-green);
+  cursor: pointer;
 }
 
 .level-selector option {
