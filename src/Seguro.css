@@ -130,6 +130,15 @@ body {
   padding-top: 60px; /* Ajusta este valor según el tamaño de tu top-bar */
 }
 
+.title-image {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 20px; /* Espacio interno que "empuja" el contenido */
+  box-sizing: border-box; /* Asegura que el padding no expanda el tamaño del contenedor */
+  background-color: rgba(255, 255, 255, 0); /* Fondo transparente para visualización, puedes cambiarlo */
+  border: 10px solid transparent; /* Puedes usar un borde si deseas más espacio, o mantenerlo transparente */
+}
+
+
 .content {
   background-color: rgba(255, 255, 255, 0.795);
   border-radius: 20px;
@@ -138,7 +147,7 @@ body {
   max-width: 800px;
   width: 90%;
   max-height: 90vh;
-  height: 70vh;
+  height: 60vh;
   overflow-y: auto;
   position: fixed;
   top: 50%;
@@ -308,7 +317,7 @@ button {
   font-weight: 500 !important;
   border-radius: 8px !important;
   font-family: 'Luckiest Guy', cursive !important;
-  border: 1px solid transparent !important;
+  border: none !important;
   background-repeat: no-repeat;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
@@ -322,15 +331,60 @@ button {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
 }
 
+.indicaciones {
+  background-image: url(/src/assets/img/titulos\ juegos-03.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /* Hace la imagen un poco más larga horizontalmente */
+  display: inline-block;
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  padding: 0px 0px; /* Añade más espacio interno horizontal para hacerla más larga */
+  margin: 0;
+  white-space: nowrap; /* Mantiene el texto en una sola línea */
+}
+
+
+
+.mute-button {
+  position: fixed !important;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 80px !important;
+  right: 50px !important;
+}
+
+.mute-button:focus {
+  outline: none;
+}
+
+.mute-button svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
 .restart-button{
   background-image: url(/src/assets/img/titulos\ juegos-04.png);
   background-repeat: no-repeat;
   padding: 0%;
   margin: 0%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
-
 }
 
+.home-button{
+  background-image: url(/src/assets/img/titulos\ juegos-03.png);
+  background-repeat: no-repeat;
+  padding: 0%;
+  margin: 0%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
+}
 /* button:hover {
   background-color: darkgreen !important;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
@@ -402,7 +456,18 @@ button:active {
 } */
 
 /* Estilos para los carros */
-.car {
+
+
+.car1 img, .car2 img, .car3 img {
+  width: 100%; /* Para que la imagen ocupe todo el ancho del contenedor */
+  height: 100%; /* Para que la imagen ocupe toda la altura del contenedor */
+  object-fit: contain; /* Ajusta la imagen dentro del contenedor sin distorsión */
+}
+
+
+.car1, .car2, .car3 {
+  width: 85px; /* Cambia a la medida que necesites */
+  height: 85px; /* Cambia a la medida que necesites */
   position: fixed;
   border-radius: 5px;
   animation: carMove 20s linear infinite;
@@ -410,7 +475,8 @@ button:active {
   align-items: flex-end;
 }
 
-.car::before {
+
+.car1::before, .car2::before, .car3::before{
   content: '';
   position: absolute;
   top: -10px;
@@ -418,49 +484,42 @@ button:active {
   border-radius: 5px 5px 0 0;
 }
 
-.car1 img {
-  width: 10%;
-}
-.car2 img {
-  width: 10%;
-}
-.car3 img {
-  width: 10%;
-}
-
 .car1 {
-  bottom: 10px;
+  bottom: 0px;
   animation-delay: 0s;
 }
 
 .car2 {
-  bottom: 5px;
+  bottom: 0px;
   animation-delay: 1s;
 }
 
 .car3 {
-  bottom: 15px;
+  bottom: 0px;
   animation-delay: 3s;
 }
 
-/* Animación sin cambios de tamaño */
+/* Animación modificada para los carros */
 @keyframes carMove {
   0% {
-    left: -60px;
+    left: -10%;
+    transform: scaleX(1) scale(1);
   }
   45% {
-    left: calc(100vw);
+    left: 110%;
+    transform: scaleX(1) scale(1);
   }
   50% {
-    left: calc(100vw);
+    left: 110%;
+    transform: scaleX(-1) scale(1);
   }
   95% {
-    left: -100px;
+    left: -10%;
+    transform: scaleX(-1) scale(1);
   }
   100% {
-    left: -60px;
-    /* Reflejar horizontalmente pero sin afectar el tamaño */
-    transform: translateX(0) scaleX(-1);
+    left: -10%;
+    transform: scaleX(1) scale(1);
   }
 }
 
@@ -606,24 +665,55 @@ button:active {
 
 /* Pantallas de escritorio normales (PC 1024px - 1365px) */
 @media (min-width: 1025px) and (max-width: 1365px) {
+    /* Contenedor principal */
+  .app-container {
+    display: flex;
+    flex-direction: column; /* Ordena los elementos verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    position: relative;
+    padding: 20px;
+  }
+
+  /* 1. Centra la imagen del título */
+  .title-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 300px;
+    width: 100%;
+    margin-bottom: 20px; /* Añade espacio entre los elementos */
+  }
+
+  /* 2. Indicaciones centradas después del título */
+  .indicaciones {
+    background-image: url(/src/assets/img/titulos\ juegos-04.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 21vh;
+    margin-bottom: 20px; /* Espacio entre indicaciones y mute-button */
+    position: static; /* Asegura que no se mueva con "fixed" */
+  }
+
+  /* 3. Botón de mute centrado */
+  .mute-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+
+  /* 4. Contenido centrado */
   .content {
     max-width: 1000px;
     width: 40%;
     max-height: 90vh;
+    margin-bottom: 20px;
   }
 
-  .top-bar { 
-    max-width: 1000px;
-  }
-
-    .timer, .score, .timer-digits, .score-digits, #level-select, .level-selector label {
-    font-size: 16px;
-  }
-
-  .title-image {
-    max-width: 300px;
-  }
-
+  /* 5. Imagen de Alejo centrada */
   .alejo-image {
     max-width: 200px;
     margin-bottom: 20px;
@@ -636,6 +726,7 @@ button:active {
     max-width: 1000px;
     width: 50%;
     max-height: 90vh;
+    margin-top: 100px;
   }
 
   .top-bar { 
@@ -653,6 +744,7 @@ button:active {
     max-width: 500px;
     width: 30%;
     margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
+    margin-bottom: 20px; /* Añade espacio entre los elementos */
   }
   
 
@@ -691,8 +783,9 @@ button:active {
     justify-content: center; /* Centra horizontalmente la imagen */
     align-items: center; /* Alinea verticalmente si es necesario */
     max-width: 500px;
-    width: 35%;
+    width: 30%;
     margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
+    margin-bottom: 20px; /* Añade espacio entre los elementos */
   }
   
 
@@ -715,6 +808,7 @@ button:active {
   .content {
     max-width: 550px;
     width: 70%;
+    margin-top: 50px;
   }
 
   .top-bar { 
@@ -775,6 +869,7 @@ button:active {
     max-width: 500px;
     width: 40%;
     margin: 0 auto; /* Asegura que esté centrada dentro de su contenedor */
+    margin-bottom: 20px; /* Añade espacio entre los elementos */
   }
 
   .alejo-image {
