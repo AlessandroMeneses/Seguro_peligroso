@@ -10,34 +10,34 @@ import winSound from "./assets/sounds/win.mp3";
 import indicacionesSound from "./assets/sounds/indicaciones.mp3";
 
 // Import the images
-import par1 from "./assets/img/par1.png";
-import par2 from "./assets/img/par2.png";
-import par3 from "./assets/img/par3.png";
-import par4 from "./assets/img/par4.png";
-import par5 from "./assets/img/par5.png";
-import par6 from "./assets/img/par6.png";
-import par7 from "./assets/img/par7.png";
-import par8 from "./assets/img/par8.png";
-import par9 from "./assets/img/par9.png";
-import par10 from "./assets/img/par10.png";
+import par1 from "./assets/img/par1.webp";
+import par2 from "./assets/img/par2.webp";
+import par3 from "./assets/img/par3.webp";
+import par4 from "./assets/img/par4.webp";
+import par5 from "./assets/img/par5.webp";
+import par6 from "./assets/img/par6.webp";
+import par7 from "./assets/img/par7.webp";
+import par8 from "./assets/img/par8.webp";
+import par9 from "./assets/img/par9.webp";
+import par10 from "./assets/img/par10.webp";
 
-import par11 from "./assets/img/par11.png";
-import par22 from "./assets/img/par22.png";
-import par33 from "./assets/img/par33.png";
-import par44 from "./assets/img/par44.png";
-import par55 from "./assets/img/par55.png";
-import par66 from "./assets/img/par66.png";
-import par77 from "./assets/img/par77.png";
-import par88 from "./assets/img/par88.png";
-import par99 from "./assets/img/par99.png";
-import par1010 from "./assets/img/par1010.png";
+import par11 from "./assets/img/par11.webp";
+import par22 from "./assets/img/par22.webp";
+import par33 from "./assets/img/par33.webp";
+import par44 from "./assets/img/par44.webp";
+import par55 from "./assets/img/par55.webp";
+import par66 from "./assets/img/par66.webp";
+import par77 from "./assets/img/par77.webp";
+import par88 from "./assets/img/par88.webp";
+import par99 from "./assets/img/par99.webp";
+import par1010 from "./assets/img/par1010.webp";
 
-import car1 from "./assets/img/car1.png";
-import car2 from "./assets/img/car2.png";
-import car3 from "./assets/img/car3.png";
+import car1 from "./assets/img/car1.webp";
+import car2 from "./assets/img/car2.webp";
+import car3 from "./assets/img/car3.webp";
 
-import alejoImage from "./assets/img/alejo.png";
-import titleImage from "./assets/img/title.png";
+import alejoImage from "./assets/img/alejo.webp";
+import titleImage from "./assets/img/title.webp";
 
 const messagesByImage = {
   0: "El adulto no va atento al joven",
